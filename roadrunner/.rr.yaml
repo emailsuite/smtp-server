@@ -1,0 +1,13 @@
+server:
+  command: "php rrworker.php"
+
+http:
+  address: "127.0.0.1:80"
+  pool.debug: true
+  pool:
+    num_workers: 4
+
+logs:
+  level: debug
+  mode: production
+  output: "var/log/roadrunner_error.log"
