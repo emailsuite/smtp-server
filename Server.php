@@ -24,10 +24,12 @@ class Server
         }
         if ($body['action'] == 'close') {
             $this->socketManager->closeSocket($socketId);
+            return new Response();
         }
-        $response = $this->socketManager->sendMessage($socketId, $body['message']);
+        list($code, $response) = $this->socketManager->sendMessage($socketId, $body['message']);
         $result = [
             'socket_id' => $socketId,
+            'code' => $code,
             'response' => $response,
         ];
         return new Response(200, [], json_encode($result));

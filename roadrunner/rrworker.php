@@ -5,7 +5,10 @@
 use Spiral\RoadRunner;
 use Nyholm\Psr7;
 
-include "../vendor/autoload.php";
+include __DIR__ . "/../vendor/autoload.php";
+include __DIR__ . "/../Server.php";
+include __DIR__ . "/../SocketManager.php";
+
 
 $worker = RoadRunner\Worker::create();
 $psrFactory = new Psr7\Factory\Psr17Factory();
@@ -19,21 +22,16 @@ register_shutdown_function(function () use ($worker) {
     $worker->respond($response);
 });
 
-
+$server = new Server();
 while ($request = $worker->waitRequest()) {
     // magic fix for json body
     $request->getBody()->rewind();
-
-    //$timeStart = microtime(true);
     try {
-        $response = $apiWorker->handleRequest($request);
+        $response = $server->handle($request);
         $worker->respond($response);
     } catch (\Throwable $e) {
         $response = new Psr7\Response(500, [], 'Server error: ' . $e->getMessage());
         $worker->respond($response);
         //$worker->getWorker()->error($e->getMessage());
     }
-
-    //$timeDone = round((microtime(true) - $timeStart) * 1000);
-    //$response = $response->withAddedHeader('X-Execution-Time', $timeDone);
 }
