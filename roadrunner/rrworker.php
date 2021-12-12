@@ -1,6 +1,7 @@
 <?php
 
-# run command:  ./roadrunner/rr serve
+# getting binary: ../vendor/bin/rr get-binary
+# run command:  ./rr serve
 
 use Spiral\RoadRunner;
 use Nyholm\Psr7;

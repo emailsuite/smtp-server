@@ -17,6 +17,10 @@ class Server
     {
         $body = $request->getBody()->getContents();
         $body = json_decode($body, true);
+        if (!$body['action']) {
+            return new Response(404, [],'Not found');
+        }
+
         if ($body['action'] == 'init') {
             $socketId = $this->socketManager->openSocket($body['host'], $body['port'], $body['timeout']);
         } else {
