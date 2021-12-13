@@ -3,9 +3,9 @@ server:
 
 http:
   address: "127.0.0.1:8080"
-  pool.debug: true
+#  pool.debug: true
   pool:
-    num_workers: 4
+    num_workers: 1
 
 #logs:
 #  level: debug
