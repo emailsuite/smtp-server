@@ -17,12 +17,16 @@ class Server
     {
         $body = $request->getBody()->getContents();
         $body = json_decode($body, true);
-        if (!$body['action']) {
-            return new Response(404, [],'Not found');
+
+        if (!isset($body['action'])) {
+            return new Response(404, [], 'Not found');
         }
 
         if ($body['action'] == 'init') {
-            $socketId = $this->socketManager->openSocket($body['host'], $body['port'], $body['timeout']);
+            $socketId = $this->socketManager->openSocket($body['host'], $body['port']);
+            return new Response(200, [], json_encode([
+                'socket_id' => $socketId,
+            ]));
         } else {
             $socketId = $body['socket_id'];
         }
