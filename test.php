@@ -37,6 +37,9 @@ $result = sendMessage($ch, [
 ]);
 echo json_encode($result) . "\n";
 $socketId = $result['socket_id'];
+if ($result['code'] >= 400) {
+    die;
+}
 
 $result = sendMessage($ch, [
     'action' => 'message',
@@ -44,6 +47,9 @@ $result = sendMessage($ch, [
     'message' => "helo $host",
 ]);
 echo json_encode($result) . "\n";
+if ($result['code'] >= 400) {
+    die;
+}
 
 $result = sendMessage($ch, [
     'action' => 'message',
@@ -51,6 +57,9 @@ $result = sendMessage($ch, [
     'message' => "mail from:<$fromEmail>",
 ]);
 echo json_encode($result) . "\n";
+if ($result['code'] >= 400) {
+    die;
+}
 
 $result = sendMessage($ch, [
     'action' => 'message',
@@ -58,6 +67,9 @@ $result = sendMessage($ch, [
     'message' => "rcpt to:<$toEmail>",
 ]);
 echo json_encode($result) . "\n";
+if ($result['code'] >= 400) {
+    die;
+}
 
 $result = sendMessage($ch, [
     'action' => 'message',
@@ -65,6 +77,9 @@ $result = sendMessage($ch, [
     'message' => "data",
 ]);
 echo json_encode($result) . "\n";
+if ($result['code'] >= 400) {
+    die;
+}
 
 $result = sendMessage($ch, [
     'action' => 'message',
@@ -72,3 +87,6 @@ $result = sendMessage($ch, [
     'message' => "subject: My Telnet Test Email \n some test email \r\n.",
 ]);
 echo json_encode($result) . "\n";
+if ($result['code'] >= 400) {
+    die;
+}
