@@ -6,14 +6,18 @@ class SocketManager
     private static $sockets = [];
     private static $socketOpened = [];
 
-    public function openSocket($host, int $port, int $timeout = 1): int
+    public function openSocket($host, int $port, int $timeout = 1): string
     {
         $socket = fsockopen($host, $port, $errorCode, $errorMessage, $timeout);
         if (!$socket) {
             throw new Exception('Socket opening error: ' . $errorMessage);
         }
         $this->readResponse($socket);
-        $socketId = get_resource_id($socket);
+        $socketId = uniqid(get_resource_id($socket) . '-');
+        if (isset(self::$sockets[$socketId])) {
+            $socketId = uniqid(get_resource_id($socket) . '-', true);
+        }
+        self::$sockets[11] = 12;
         self::$sockets[$socketId] = $socket;
         self::$socketOpened[$socketId] = time();
         return $socketId;

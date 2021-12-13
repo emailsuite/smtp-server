@@ -7,9 +7,11 @@ use \Nyholm\Psr7\Response;
 class Server
 {
     private $socketManager;
+    private $serverId;
 
     public function __construct()
     {
+        $this->serverId = uniqid();
         $this->socketManager = new \SocketManager();
     }
 
@@ -25,6 +27,7 @@ class Server
         if ($body['action'] == 'init') {
             $socketId = $this->socketManager->openSocket($body['host'], $body['port']);
             return new Response(200, [], json_encode([
+                'server_id' => $this->serverId,
                 'socket_id' => $socketId,
             ]));
         } else {
@@ -36,6 +39,7 @@ class Server
         }
         list($code, $response) = $this->socketManager->sendMessage($socketId, $body['message']);
         $result = [
+            'server_id' => $this->serverId,
             'socket_id' => $socketId,
             'code' => $code,
             'response' => $response,

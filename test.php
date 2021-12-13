@@ -14,7 +14,7 @@ $fromEmail = 'sender@example.com';
 
 
 $ch = curl_init();
-function sendMessage($ch, $data = [])
+function sendMessage($ch, $data = []): array
 {
     curl_setopt($ch, CURLOPT_URL, "http://127.0.0.1:8080");
     curl_setopt($ch, CURLOPT_POST, 1);
@@ -22,8 +22,11 @@ function sendMessage($ch, $data = [])
     curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     $response = curl_exec($ch);
-    return $response;
-    //return json_decode($response, true);
+    $data = json_decode($response, true);
+    if (!$data) {
+        $data = ['not_json' => $response];
+    }
+    return $data;
 }
 
 
@@ -32,9 +35,8 @@ $result = sendMessage($ch, [
     'host' => $host,
     'port' => $port,
 ]);
-echo $result . "\n";
-die;
-$socketId = 5;
+echo json_encode($result) . "\n";
+$socketId = $result['socket_id'];
 
 $result = sendMessage($ch, [
     'action' => 'message',

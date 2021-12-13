@@ -23,6 +23,7 @@ register_shutdown_function(function () use ($worker) {
     $worker->respond($response);
 });
 
+
 $server = new Server();
 while ($request = $worker->waitRequest()) {
     // magic fix for json body
@@ -31,7 +32,7 @@ while ($request = $worker->waitRequest()) {
         $response = $server->handle($request);
         $worker->respond($response);
     } catch (\Throwable $e) {
-        $response = new Psr7\Response(500, [], 'Server error: ' . $e->getMessage());
+        $response = new Psr7\Response(500, [], json_encode(['server_error' => $e->getMessage()]));
         $worker->respond($response);
         //$worker->getWorker()->error($e->getMessage());
     }
