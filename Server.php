@@ -41,8 +41,8 @@ class Server
             return new Response();
         }
         if ($body['action'] == 'tls') {
-            $this->socketManager->enableTls($socketId);
-            return new Response();
+            $result = $this->socketManager->enableTls($socketId);
+            return new Response(200, [], json_encode(['tls' => $result]));
         }
         list($code, $response) = $this->socketManager->sendMessage($socketId, $body['message']);
         $result = [
