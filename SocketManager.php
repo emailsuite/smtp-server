@@ -30,6 +30,16 @@ class SocketManager
         fclose($socketId);
     }
 
+    public function enableTls($socketId)
+    {
+        stream_socket_enable_crypto(
+            self::$sockets[$socketId],
+            true,
+            STREAM_CRYPTO_METHOD_TLS_CLIENT,
+        );
+
+    }
+
     public function sendMessage($socketId, $message): array
     {
         $message = trim($message) . self::CRLF;

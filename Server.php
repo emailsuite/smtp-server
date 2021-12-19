@@ -40,6 +40,10 @@ class Server
             $this->socketManager->closeSocket($socketId);
             return new Response();
         }
+        if ($body['action'] == 'tls') {
+            $this->socketManager->enableTls($socketId);
+            return new Response();
+        }
         list($code, $response) = $this->socketManager->sendMessage($socketId, $body['message']);
         $result = [
             'server_id' => $this->serverId,
