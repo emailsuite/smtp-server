@@ -1,3 +1,5 @@
 .idea
 vendor
 roadrunner/rr_local
+roadrunner/.rr.yaml
+
