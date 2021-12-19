@@ -1,6 +1,7 @@
 {
     "require": {
         "spiral/roadrunner": "^2.6",
-        "nyholm/psr7": "^1.4"
+        "nyholm/psr7": "^1.4",
+      "ext-curl": "*"
     }
 }

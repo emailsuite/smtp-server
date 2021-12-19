@@ -23,6 +23,9 @@ class Server
         if (!isset($body['action'])) {
             return new Response(404, [], 'Not found');
         }
+        if (!isset($body['token']) || $body['token'] != 'auuwechvw_test_token_nv873ta34v') { //@TODO
+            return new Response(401, [], 'Invalid auth token');
+        }
 
         if ($body['action'] == 'init') {
             $socketId = $this->socketManager->openSocket($body['host'], $body['port']);
