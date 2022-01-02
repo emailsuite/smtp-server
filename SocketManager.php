@@ -17,7 +17,6 @@ class SocketManager
         if (isset(self::$sockets[$socketId])) {
             $socketId = uniqid(get_resource_id($socket) . '-', true);
         }
-        self::$sockets[11] = 12;
         self::$sockets[$socketId] = $socket;
         self::$socketOpened[$socketId] = time();
         return $socketId;
