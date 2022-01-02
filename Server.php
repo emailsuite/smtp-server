@@ -27,6 +27,10 @@ class Server
             return new Response(401, [], 'Invalid auth token');
         }
 
+        if ($body['action'] == 'check_email') {
+            return $this->checkEmail($body['email'], $body['host'], $body['port']);
+        }
+
         if ($body['action'] == 'init') {
             $socketId = $this->socketManager->openSocket($body['host'], $body['port']);
             return new Response(200, [], json_encode([
@@ -56,5 +60,21 @@ class Server
             'response' => $response,
         ];
         return new Response(200, [], json_encode($result));
+    }
+
+    private function checkEmail($toEmail, $fromEmail, $host, $port)
+    {
+        $socketId = $this->socketManager->openSocket($host, $port);
+        list($code, $response) = $this->socketManager->sendMessage($socketId, "helo $host");
+        if ($code >= 300) {
+            return new Response(200, [], json_encode(['code' => $code, 'response' => $response]));
+        }
+        list($code, $response) = $this->socketManager->sendMessage($socketId, "mail from: <$fromEmail>");
+        if ($code >= 300) {
+            return new Response(200, [], json_encode(['code' => $code, 'response' => $response]));
+        }
+        list($code, $response) = $this->socketManager->sendMessage($socketId, "rcpt to:<$toEmail>");
+        $this->socketManager->closeSocket($socketId);
+        return new Response(200, [], json_encode(['code' => $code, 'response' => $response]));
     }
 }
