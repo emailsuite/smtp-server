@@ -6,20 +6,20 @@ class SocketManager
     private static $sockets = [];
     private static $socketOpened = [];
 
-    public function openSocket($host, int $port, int $timeout = 1): string
+    public function openSocket($host, int $port, int $timeout = 1): array
     {
         $socket = fsockopen($host, $port, $errorCode, $errorMessage, $timeout);
         if (!$socket) {
             throw new Exception('Socket opening error: ' . $errorMessage);
         }
-        $this->readResponse($socket);
+        list($code, $response) = $this->readResponseAndCode($socket);
         $socketId = uniqid(get_resource_id($socket) . '-');
         if (isset(self::$sockets[$socketId])) {
             $socketId = uniqid(get_resource_id($socket) . '-', true);
         }
         self::$sockets[$socketId] = $socket;
         self::$socketOpened[$socketId] = time();
-        return $socketId;
+        return [$socketId, $code, $response];
     }
 
     public function closeSocket($socketId)
@@ -29,7 +29,7 @@ class SocketManager
         fclose($socketId);
     }
 
-    public function enableTls($socketId):bool
+    public function enableTls($socketId): bool
     {
         return stream_socket_enable_crypto(
             self::$sockets[$socketId],
@@ -43,10 +43,11 @@ class SocketManager
         $message = trim($message) . self::CRLF;
         $socket = self::$sockets[$socketId];
         fputs($socket, $message);
-        return $this->readResponse($socket);
+        list($code, $response) = $this->readResponseAndCode($socket);
+        return [$code, $response];
     }
 
-    private function readResponse($socket): array
+    private function readResponseAndCode($socket): array
     {
         $code = 0;
         $response = '';
