@@ -32,10 +32,12 @@ class Server
         }
 
         if ($body['action'] == 'init') {
-            $socketId = $this->socketManager->openSocket($body['host'], $body['port']);
+            list($socketId, $code, $response) = $this->socketManager->openSocket($body['host'], $body['port']);
             return new Response(200, [], json_encode([
                 'server_id' => $this->serverId,
                 'socket_id' => $socketId,
+                'code' => $code,
+                'response' => $response,
             ]));
         } else {
             $socketId = $body['socket_id'];
@@ -64,7 +66,7 @@ class Server
 
     private function checkEmail($toEmail, $fromEmail, $host, $port)
     {
-        $socketId = $this->socketManager->openSocket($host, $port);
+        list($socketId, $code, $response) = $this->socketManager->openSocket($host, $port);
         list($code, $response) = $this->socketManager->sendMessage($socketId, "helo $host");
         if ($code >= 300) {
             return new Response(200, [], json_encode(['code' => $code, 'response' => $response]));
