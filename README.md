@@ -12,3 +12,29 @@ Check PTR https://mxtoolbox.com/ReverseLookup.aspx
 Check that 25-th port is open:
 telnet outlook-com.olc.protection.outlook.com 25
 
+Install PHP (cli module). Prefer version is 8.0+
+apt install php8.0-cli
+
+Install Git or download zip archive of this repo
+
+Install Composer for PHP libraries
+curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
+
+Secure practice is creating user for web/php code
+adduser esmtp
+
+# Installation
+```shell
+sudo apt install php8.0-curl
+git clone https://github.com/emailsuite/smtp-proxy.git
+cd smtp-proxy
+composer install
+cd roadrunner
+../vendor/bin/rr get-binary
+# dont create default config file
+cp .rr_sample.yaml .rr.yaml
+# provide your host IP in config instead 127.0.0.1:
+nano .rr.yaml 
+# check roadrunner server
+.rr serve
+```
