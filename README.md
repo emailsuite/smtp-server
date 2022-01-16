@@ -9,3 +9,6 @@ Set PTR record like mail.yourdomain.com
 For DigitalOcean it can made by setting hostname
 Check PTR https://mxtoolbox.com/ReverseLookup.aspx 
 
+Check that 25-th port is open:
+telnet outlook-com.olc.protection.outlook.com 25
+
