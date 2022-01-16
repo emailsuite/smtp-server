@@ -3,5 +3,6 @@ vendor
 roadrunner/rr_local
 roadrunner/.rr.yaml
 roadrunner/rr
+roadrunner/supervisor.conf
 composer.lock
 
