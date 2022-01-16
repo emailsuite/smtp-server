@@ -23,6 +23,8 @@ curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/loca
 Secure practice is creating user for web/php code
 adduser esmtp
 
+Install supervisor
+
 # Installation
 ```shell
 sudo apt install php8.0-curl
@@ -37,4 +39,13 @@ cp .rr_sample.yaml .rr.yaml
 nano .rr.yaml 
 # check roadrunner server
 .rr serve
+cp supervisor_sample.conf supervisor.conf 
+# set right user and full path to /rr file
+nano supervisor.conf
+# make link of super config:
+sudo ln -s /home/esmtp/smtp-proxy/roadrunner/supervisor.conf /etc/supervisor/conf.d/
+sudo service supervisor reload
+
+#check rr works
+ps aux | grep roadrunner
 ```
