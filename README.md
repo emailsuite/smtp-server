@@ -3,7 +3,10 @@
 # How to setup an email server
 Buy a virtual server, for example DigitalOcean. OS can be Debian/Ubuntu or any.
 
-Check your new server's IP in SPAM blacklists https://mxtoolbox.com/blacklists.aspx
+Check your new server's IP in SPAM blacklists
+- https://mxtoolbox.com/blacklists.aspx
+- https://talosintelligence.com/reputation_center
+- https://ipcheck.proofpoint.com/
 
 Set PTR record like mail.yourdomain.com 
 For DigitalOcean it can made by setting hostname
